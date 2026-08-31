@@ -12,6 +12,7 @@ public class Nave {
     private int x;
     private int y;
     private int capacidade;
+    private int vida;
     private List<Passageiro> passageiros = new ArrayList<>();
 
     /**
@@ -25,6 +26,7 @@ public class Nave {
         this.capacidade = capacidade;
         this.x = 0;
         this.y = 0;
+        this.vida = 3;
     }
 
     public String getId() { return id; }
@@ -36,6 +38,7 @@ public class Nave {
     public int getCapacidade() { return capacidade; }
 
     public List<Passageiro> getPassageiros() { return passageiros; }
+    public int getVida() { return vida;  }
 
     /** Move a nave uma posição para cima (y--). */
     public void moveUp() { y--; }
@@ -63,4 +66,10 @@ public class Nave {
         }
         return false;
     }
+
+    public int perderVida(){
+        return this.vida--;
+    }
+
+    
 }

@@ -3,16 +3,14 @@ package missao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
-/**
- * Representa o estado da missão: nave, passageiros e asteroides.
- * Fornece operações para detectar colisões, localizar passageiros na posição
- * da nave e embarcar passageiros.
- */
 public class Missao {
+    
     private Nave nave;
     private List<Passageiro> passageiros = new ArrayList<>();
     private List<Asteroide> asteroides = new ArrayList<>();
+    private List<Inimigo> inimigos = new ArrayList<>();
 
     public Missao(Nave nave) {
         this.nave = nave;
@@ -22,70 +20,87 @@ public class Missao {
         return nave;
     }
 
-    public java.util.List<Passageiro> getPassageiros() {
+    public List<Passageiro> getPassageiros() {
         return passageiros;
     }
 
-    public java.util.List<Asteroide> getAsteroides() {
+    public List<Asteroide> getAsteroides() {
         return asteroides;
     }
 
-    /**
-     * Adiciona um passageiro ao mapa da missão.
-     *
-     * @param p passageiro a adicionar
-     */
-    public void addPassageiro(Passageiro p) { passageiros.add(p); }
+    public List<Inimigo> getInimigos() {
+        return inimigos;
+    }
 
-    /**
-     * Adiciona um asteroide ao mapa da missão.
-     *
-     * @param a asteroide a adicionar
-     */
-    public void addAsteroide(Asteroide a) { asteroides.add(a); }
+    public void addPassageiro(Passageiro p) {
+        passageiros.add(p);
+    }
+
+    public void addAsteroide(Asteroide a) {
+        asteroides.add(a);
+    }
+
+    public void addInimigo(Inimigo i) {
+        inimigos.add(i);
+    }
+
+    public void moverInimigos(Random random, int minX, int maxX, int minY, int maxY) {
+        for (Inimigo each : inimigos) {
+            int direcao = random.nextInt(4);
+            int novoX = each.getX();
+            int novoY = each.getY();
+
+            if (direcao == 0 && novoY > minY) {
+                novoY--;
+            } else if (direcao == 1 && novoY < maxY) {
+                novoY++;
+            } else if (direcao == 2 && novoX > minX) {
+                novoX--;
+            } else if (direcao == 3 && novoX < maxX) {
+                novoX++;
+            }
+
+            each.setX(novoX);
+            each.setY(novoY);
+        }
+    }
 
     public boolean verificaColisao() {
-        // Percorre todos os asteroides e verifica se algum coincide com a
-        // posição da nave. Uso de método em Asteroide encapsula a checagem.
-        for (Asteroide a : asteroides) {
-            if (a.colideCom(nave)) return true;
+        for (Asteroide each : asteroides) {
+            if (each.colideCom(nave))
+                return true;
+        }
+        for (Inimigo each : inimigos) {
+            if (each.colideCom(nave))
+                return true;
         }
         return false;
     }
 
-    /**
-     * Retorna o primeiro passageiro encontrado na mesma posição da nave,
-     * ou `null` se não houver nenhum.
-     *
-     * @return `Passageiro` na posição da nave ou `null`
-     */
     public Passageiro passagemNaPosicao() {
-        // Retorna o primeiro passageiro encontrado na mesma posição da nave.
         for (Passageiro p : passageiros) {
-            if (p.getX() == nave.getX() && p.getY() == nave.getY()) return p;
+            if (p.getX() == nave.getX() && p.getY() == nave.getY())
+                return p;
         }
         return null;
     }
 
     public boolean embarcarPassageiroNaPosicao() {
-        // Itera usando Iterator para permitir remoção segura durante iteração.
         Iterator<Passageiro> it = passageiros.iterator();
         while (it.hasNext()) {
             Passageiro p = it.next();
             if (p.getX() == nave.getX() && p.getY() == nave.getY()) {
-                // Tenta embarcar na nave; se bem-sucedido, remove do solo
                 boolean ok = nave.embarcar(p);
-                if (ok) it.remove();
+                if (ok)
+                    it.remove();
                 return ok;
             }
         }
         return false;
     }
 
-    /**
-     * Indica se todos os passageiros já foram embarcados.
-     *
-     * @return true se não restarem passageiros no solo
-     */
-    public boolean todosEmbarcados() { return passageiros.isEmpty(); }
+    public boolean todosEmbarcados() {
+        return passageiros.isEmpty();
+    }
+
 }
