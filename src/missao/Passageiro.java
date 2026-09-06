@@ -1,9 +1,5 @@
 package missao;
 
-/**
- * Entidade básica que representa um passageiro no mapa com nome, tipo e
- * coordenadas (x,y).
- */
 public class Passageiro {
     private String nome;
     private String tipo;
@@ -17,11 +13,23 @@ public class Passageiro {
         this.y = y;
     }
 
-    public String getNome() { return nome; }
+    public String getNome() {
+        return nome;
+    }
 
-    public String getTipo() { return tipo; }
+    public String getTipo() {
+        return tipo;
+    }
 
-    public int getX() { return x; }
+    public int getX() {
+        return x;
+    }
 
-    public int getY() { return y; }
+    public int getY() {
+        return y;
+    }
+
+    public int getPontuacao() {
+        return 10;
+    }
 }
