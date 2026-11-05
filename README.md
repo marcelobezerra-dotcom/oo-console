@@ -1,60 +1,106 @@
-Missão Marte — Exemplo OO (console)
-=====================================
+# Missão Marte Unifor — Jogo OO em Console
 
-Este é um exemplo minimalista para aplicar conceitos de Orientação a Objetos no projeto "Missão Marte Unifor".
+**Disciplina:** Projeto arquitetura de sistemas 
+**Repositório:** https://github.com/LucasDCoelho/trabalho_arquitetura
 
-Conteúdo:
+## Integrantes
 
-- `src/missao` — código fonte Java (classes: `Nave`, `Passageiro`, `Professor`, `Engenheiro`, `Asteroide`, `Missao`, `Main`).
+| Nome | Matrícula | GitHub |
+|---|---|---|
+| Lucas Coelho | 2510461 | LucasDCoelho |
+| João Pedro Carvalho | 2510547 | carvalho-jp |
 
-Compilar e executar (a partir da raiz do repositório):
+## Sobre o Projeto
+
+Este repositório mantém a versão original do jogo em `src/missao` e também inclui uma refatoração em `src/solidexercicio10`, organizada com foco nos princípios SOLID.
+
+A ideia da refatoração é separar responsabilidades de negócio, apresentação e persistência, mantendo o fluxo principal do jogo funcionando e melhorando a manutenção do código. A versão original foi preservada para permitir comparação entre o antes e o depois.
+
+## Estrutura
+
+```text
+src/
+├── missao/
+│   ├── Main.java
+│   ├── Missao.java
+│   ├── Nave.java
+│   ├── Passageiro.java
+│   ├── Professor.java
+│   ├── Engenheiro.java
+│   ├── Astronauta.java
+│   ├── Asteroide.java
+│   ├── Inimigo.java
+│   └── Dificuldade.java
+│
+└── solidexercicio10/
+    ├── Main.java
+    ├── model/
+    │   ├── EntidadeMapa.java
+    │   ├── Posicionavel.java
+    │   ├── Movel.java
+    │   ├── Dificuldade.java
+    │   ├── Passageiro.java
+    │   ├── Professor.java
+    │   ├── Engenheiro.java
+    │   ├── Astronauta.java
+    │   ├── Asteroide.java
+    │   ├── Inimigo.java
+    │   ├── Nave.java
+    │   └── Missao.java
+    ├── presentation/
+    │   └── MapaRenderer.java
+    ├── repository/
+    │   ├── RankingRepository.java
+    │   ├── RankingService.java
+    │   └── RankingEntry.java
+    └── service/
+        └── JogoService.java
+```
+
+## Compilação e Execução
+
+Execute os comandos abaixo a partir da raiz do repositório:
 
 ```bash
-javac -g -d out src/missao/*.java
+javac -d out src/missao/*.java
 java -cp out missao.Main
 ```
 
-Geração de documentação (Javadoc):
-
-```bash
-"C:\Program Files\Java\jdk-21\bin\javadoc.exe" -d docs -encoding UTF-8 -charset UTF-8 -sourcepath src missao
-```
-
-- Os arquivos HTML serão gerados em `docs/` (abra `docs/index.html`).
-
-Depuração (opções):
-
-- Console com `jdb` (depurador CLI):
+Para executar a versão refatorada:
 
 ```powershell
-& 'C:\Program Files\Java\jdk-21\bin\jdb.exe' -classpath out missao.Main
-# ou execute com caminho completo para jdb.exe se não estiver no PATH
+$files = Get-ChildItem -Recurse -Filter *.java -Path src/solidexercicio10 | ForEach-Object { $_.FullName }
+javac -d out $files
+java -cp out solidexercicio10.Main
 ```
 
-- VS Code: instale o `Extension Pack for Java`, abra o projeto e use Run and Debug. Um `launch.json` de exemplo está descrito em `VSCODE-JAVA-DEBUG.md`.
+> Requer JDK 8 ou superior.
 
-Descrição rápida do jogo em console:
+## Como Jogar
 
-- Comandos: `w` (up), `s` (down), `a` (left), `d` (right), `c` (embarcar se houver passageiro na mesma posição), `q` (sair).
-- Objetivo: embarcar todos os passageiros sem colidir com asteroides.
+| Comando | Ação |
+|---|---|
+| `w` | Mover para cima |
+| `s` | Mover para baixo |
+| `a` | Mover para a esquerda |
+| `d` | Mover para a direita |
+| `c` | Embarcar passageiro na posição atual |
+| `q` | Sair / abortar missão |
 
-Observações e recomendações:
+- Cada movimento custa `1` ponto.
+- Embarcar um passageiro vale pontos de acordo com seu tipo.
+- Colidir com asteroide ou inimigo reduz a vida da nave.
+- Quando todos os passageiros forem resgatados, o jogador deve voltar para `(0,0)` para concluir a missão.
+- O ranking pode ser consultado e resetado pelo menu do jogo.
 
-- Compile sempre com `-g` para obter informações de depuração (linhas/variáveis).
-- O ranking é salvo em `ranking.json` no diretório de trabalho. Se quiser ignorar esse arquivo no Git, adicione-o ao `.gitignore` e remova do índice com:
+## Geração de Javadoc
 
 ```bash
-git rm --cached ranking.json
-git commit -m "Remove runtime ranking from tracking"
+javadoc -d docs -encoding UTF-8 -charset UTF-8 -sourcepath src missao
 ```
 
-Para detalhes sobre como debugar com VS Code e configurações recomendadas, veja `VSCODE-JAVA-DEBUG.md`.
+Os arquivos HTML serão gerados em `docs/` (abra `docs/index.html`).
 
-Para documentação do código e recursos úteis, veja os links abaixo:
+## Revisão crítica
 
-- Javadoc (HTML gerado): [docs/index.html](docs/index.html)
-- Documentação explicativa: [DOCUMENTACAO-CODIGO.md](DOCUMENTACAO-CODIGO.md)
-- Guia de depuração no VS Code: [VSCODE-JAVA-DEBUG.md](VSCODE-JAVA-DEBUG.md)
-- Código-fonte: [src/missao](src/missao)
-
-Use este projeto como ponto de partida para exercícios de refatoração (SOLID), testes e aplicação de padrões.
+A análise da aplicação em SOLID está registrada em `REVISAO-SOLID.md`. Nesse documento são discutidas as decisões de projeto, as melhorias possíveis e os pontos que ainda poderiam ser refinados.

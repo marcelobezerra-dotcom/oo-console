@@ -12,6 +12,7 @@ public class Nave {
     private int x;
     private int y;
     private int capacidade;
+    private int vidas;
     private List<Passageiro> passageiros = new ArrayList<>();
 
     /**
@@ -25,6 +26,7 @@ public class Nave {
         this.capacidade = capacidade;
         this.x = 0;
         this.y = 0;
+        this.vidas = 3;
     }
 
     public String getId() { return id; }
@@ -37,6 +39,10 @@ public class Nave {
 
     public List<Passageiro> getPassageiros() { return passageiros; }
 
+    public int getVidas() { return vidas; }
+
+    public void perderVida() { if (vidas > 0) vidas--; }
+
     /** Move a nave uma posição para cima (y--). */
     public void moveUp() { y--; }
 
@@ -48,6 +54,15 @@ public class Nave {
 
     /** Move a nave uma posição para a direita (x++). */
     public void moveRight() { x++; }
+
+    public void moverComLimites(char cmd, int minX, int maxX, int minY, int maxY) {
+        switch (cmd) {
+            case 'w': if (y > minY) y--; break;
+            case 's': if (y < maxY) y++; break;
+            case 'a': if (x > minX) x--; break;
+            case 'd': if (x < maxX) x++; break;
+        }
+    }
 
     /**
      * Tenta embarcar um passageiro na nave.

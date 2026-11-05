@@ -3,6 +3,7 @@ package missao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Representa o estado da missão: nave, passageiros e asteroides.
@@ -13,6 +14,7 @@ public class Missao {
     private Nave nave;
     private List<Passageiro> passageiros = new ArrayList<>();
     private List<Asteroide> asteroides = new ArrayList<>();
+    private List<Inimigo> inimigos = new ArrayList<>();
 
     public Missao(Nave nave) {
         this.nave = nave;
@@ -30,25 +32,28 @@ public class Missao {
         return asteroides;
     }
 
-    /**
-     * Adiciona um passageiro ao mapa da missão.
-     *
-     * @param p passageiro a adicionar
-     */
+    public List<Inimigo> getInimigos() {
+        return inimigos;
+    }
+
     public void addPassageiro(Passageiro p) { passageiros.add(p); }
 
-    /**
-     * Adiciona um asteroide ao mapa da missão.
-     *
-     * @param a asteroide a adicionar
-     */
     public void addAsteroide(Asteroide a) { asteroides.add(a); }
 
+    public void addInimigo(Inimigo i) { inimigos.add(i); }
+
+    public void moverInimigos(Random random, int minX, int maxX, int minY, int maxY) {
+        for (Inimigo i : inimigos) {
+            i.mover(random, minX, maxX, minY, maxY);
+        }
+    }
+
     public boolean verificaColisao() {
-        // Percorre todos os asteroides e verifica se algum coincide com a
-        // posição da nave. Uso de método em Asteroide encapsula a checagem.
         for (Asteroide a : asteroides) {
             if (a.colideCom(nave)) return true;
+        }
+        for (Inimigo i : inimigos) {
+            if (i.colideCom(nave)) return true;
         }
         return false;
     }
